@@ -1,7 +1,39 @@
-import { useState } from "react";
+// App.js
+
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import BannerAd from "./components/BannerAd";
 
+// NativeBannerAd component using ref (recommended)
+function NativeBannerAd() {
+  const adRef = useRef(null);
+
+  useEffect(() => {
+    // Clean up previous ad if re-rendered
+    if (adRef.current) {
+      adRef.current.innerHTML = "";
+      const script = document.createElement("script");
+      script.src =
+        "//pl26697699.profitableratecpm.com/40df9a58267f9dcd1fad87abd0cfb998/invoke.js";
+      script.async = true;
+      script.setAttribute("data-cfasync", "false");
+      adRef.current.appendChild(script);
+    }
+    // Clean up on unmount
+    return () => {
+      if (adRef.current) adRef.current.innerHTML = "";
+    };
+  }, []);
+
+  return (
+    <div
+      ref={adRef}
+      className="w-full max-w-[728px] h-[90px] my-4 mx-auto"
+      style={{ minWidth: "320px" }}
+    ></div>
+  );
+}
 
 function App() {
   const pcGames = [
@@ -15,24 +47,6 @@ function App() {
     "https://superhotgame.com/",
     "https://miniroyale.io/",
   ];
-  const mobileGames = [
-    { name: "Flappy Bird", url: "https://flappybird.io" },
-    { name: "Stack", url: "https://kizi.com/games/stack" },
-    { name: "Moto X3M", url: "https://moto-x3m.com" },
-    {
-      name: "Jetpack Joyride Clone",
-      url: "https://html5.gamedistribution.com/0d2c7c9a92454d4a9bdb540fd0b1709a/",
-    },
-    { name: "Temple Run 2 (Clone)", url: "https://templerun.io" },
-    { name: "Subway Surfers (Clone)", url: "https://subwaysurf.io" },
-    { name: "Basketball Stars", url: "https://basketball-stars.co" },
-    { name: "Slope Game", url: "https://slope-game.io" },
-    { name: "Color Tunnel", url: "https://colortunnel.io" },
-    {
-      name: "Tap Tap Shots",
-      url: "https://www.crazygames.com/game/tap-tap-shots",
-    },
-  ];
 
   const [gameUrl, setGameUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -45,12 +59,14 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-white">
       <Navbar />
-      <main className="mx-auto px-4 py-4 w-full">
-        <div className="flex flex-col items-center gap-6">
-          {/* Bigger Game Container */}
-          <div className="w-full h-[80vh] min-h-[500px] max-h-[800px] max-w-[1800px] bg-black bg-opacity-70 border-2 border-purple-500 rounded-lg overflow-hidden shadow-lg shadow-purple-500/20 relative">
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <div className="flex flex-col items-center gap-8">
+          <BannerAd />
+          <NativeBannerAd />
+
+          <div className="w-full h-[80vh] min-h-[500px] max-h-[800px] max-w-[1600px] bg-gray-900 border border-purple-600 rounded-xl overflow-hidden shadow-2xl relative">
             {gameUrl ? (
               <>
                 <iframe
@@ -59,13 +75,13 @@ function App() {
                   className="w-full h-full"
                   frameBorder="0"
                   loading="lazy"
-                  allow="fullscreen"
+                  allowFullScreen
                 />
                 {isLoading && (
-                  <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black bg-opacity-80 flex items-center justify-center">
                     <div className="text-purple-400 flex flex-col items-center">
                       <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-2"></div>
-                      <span className="text-white font-medium">
+                      <span className="text-white font-semibold">
                         Loading Game...
                       </span>
                     </div>
@@ -73,21 +89,17 @@ function App() {
                 )}
               </>
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center p-6">
-                  <p className="text-gray-300 mb-6 text-lg">
-                    Click below to start playing
-                  </p>
-                  <div className="text-purple-400 text-6xl animate-pulse">
-                    🎮
-                  </div>
-                </div>
+              <div className="w-full h-full flex flex-col items-center justify-center">
+                <p className="text-gray-400 mb-4 text-lg">
+                  Click the button below to play a random game
+                </p>
+                <span className="text-6xl animate-bounce">🎮</span>
               </div>
             )}
           </div>
 
           <button
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-10 rounded-full transition-all transform hover:scale-105 shadow-lg shadow-purple-500/30 active:scale-95 text-lg"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition duration-200 transform hover:scale-105 shadow-md disabled:opacity-50"
             onClick={handleClick}
             disabled={isLoading}
           >
@@ -96,8 +108,8 @@ function App() {
         </div>
       </main>
 
-      <footer className="text-center text-gray-400 text-sm py-4 border-t border-gray-800 mt-4">
-        <p>The Ultimate Browser Gaming Experience</p>
+      <footer className="text-center text-gray-500 text-sm py-6 border-t border-gray-800">
+        <p>© 2025 - The Ultimate Browser Gaming Experience</p>
       </footer>
     </div>
   );
