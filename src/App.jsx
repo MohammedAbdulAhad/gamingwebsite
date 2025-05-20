@@ -10,7 +10,6 @@ function NativeBannerAd() {
   const adRef = useRef(null);
 
   useEffect(() => {
-    // Clean up previous ad if re-rendered
     if (adRef.current) {
       adRef.current.innerHTML = "";
       const script = document.createElement("script");
@@ -20,10 +19,6 @@ function NativeBannerAd() {
       script.setAttribute("data-cfasync", "false");
       adRef.current.appendChild(script);
     }
-    // Clean up on unmount
-    return () => {
-      if (adRef.current) adRef.current.innerHTML = "";
-    };
   }, []);
 
   return (
@@ -44,7 +39,6 @@ function App() {
     "https://1v1.lol/",
     "https://smashkarts.io/",
     "https://zombsroyale.io/",
-    "https://superhotgame.com/",
     "https://miniroyale.io/",
   ];
 
@@ -63,8 +57,8 @@ function App() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col items-center gap-8">
-          <BannerAd />
-          <NativeBannerAd />
+          {/* <BannerAd />
+          <NativeBannerAd /> */}
 
           <div className="w-full h-[80vh] min-h-[500px] max-h-[800px] max-w-[1600px] bg-gray-900 border border-purple-600 rounded-xl overflow-hidden shadow-2xl relative">
             {gameUrl ? (
