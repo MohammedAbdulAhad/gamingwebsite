@@ -57,8 +57,8 @@ function App() {
       <Navbar />
       <main className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col items-center gap-8">
-          {/* <BannerAd />
-          <NativeBannerAd /> */}
+          <BannerAd />
+          <NativeBannerAd />
 
           <div className="w-full h-[80vh] min-h-[500px] max-h-[800px] max-w-[1600px] bg-gray-900 border border-purple-600 rounded-xl overflow-hidden shadow-2xl relative">
             {gameUrl ? (
